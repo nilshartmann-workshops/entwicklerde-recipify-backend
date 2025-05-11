@@ -1,4 +1,4 @@
-name: htmx-oder-fullstack
+name: recipify-backend
 services:
   postgres:
     image: 'postgres:16-alpine'
