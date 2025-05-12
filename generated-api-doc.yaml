@@ -285,6 +285,30 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PageResponseFeedback"
+  /api/recipes/{recipeId}/explore:
+    get:
+      tags:
+      - recipe-api-controller
+      operationId: getExploreRecipes
+      parameters:
+      - name: recipeId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: slowdown
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetExploreRecipesResponse"
 components:
   schemas:
     NewFeedback:
@@ -399,9 +423,9 @@ components:
       properties:
         id:
           type: string
-        mealType:
-          type: string
         title:
+          type: string
+        mealType:
           type: string
     CategoryDto:
       required:
@@ -628,3 +652,25 @@ components:
           type: boolean
         meta:
           type: string
+    ExploreRecipeDto:
+      required:
+      - id
+      - mealType
+      - title
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        mealType:
+          type: string
+    GetExploreRecipesResponse:
+      required:
+      - exploreRecipes
+      type: object
+      properties:
+        exploreRecipes:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExploreRecipeDto"
