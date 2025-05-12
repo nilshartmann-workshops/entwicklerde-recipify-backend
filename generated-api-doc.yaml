@@ -308,7 +308,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GetExploreRecipesResponse"
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExploreRecipeDto"
 components:
   schemas:
     NewFeedback:
@@ -665,12 +667,3 @@ components:
           type: string
         mealType:
           type: string
-    GetExploreRecipesResponse:
-      required:
-      - exploreRecipes
-      type: object
-      properties:
-        exploreRecipes:
-          type: array
-          items:
-            $ref: "#/components/schemas/ExploreRecipeDto"

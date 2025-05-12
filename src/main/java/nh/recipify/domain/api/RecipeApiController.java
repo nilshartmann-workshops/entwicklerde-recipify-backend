@@ -93,18 +93,16 @@ public class RecipeApiController {
         );
     }
 
-    record GetExploreRecipesResponse(
-        @NotNull List<ExploreRecipeDto> exploreRecipes
-    ) {}
 
     @GetMapping("/recipes/{recipeId}/explore")
-    GetExploreRecipesResponse getExploreRecipes(@StringParameter @PathVariable long recipeId,
+    @NotNull
+    List<ExploreRecipeDto> getExploreRecipes(@StringParameter @PathVariable long recipeId,
                                                 @RequestParam("slowdown") Optional<Long> slowDown_GetExploreRecipes) {
         sleepFor("Getting Explore Recipes for recipe-id " + recipeId, slowDown_GetExploreRecipes);
 
         var exploreRecipes = recipeRepository.findExploreRecipes(recipeId);
 
-        return new GetExploreRecipesResponse(exploreRecipes);
+        return exploreRecipes;
     }
 
 
