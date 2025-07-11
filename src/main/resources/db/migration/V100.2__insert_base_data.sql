@@ -1,9 +1,9 @@
 -- @formatter:off
-INSERT INTO users (username, password, fullname) VALUES('waldemar','waldemar', 'Waldemar Vasu');
-INSERT INTO users (username, password, fullname) VALUES('karl','karl', 'Karl Marx');
-INSERT INTO users (username, password, fullname) VALUES('alessa','alessa', 'Alessa Bradley');
-INSERT INTO users (username, password, fullname) VALUES('lauren','lauren', 'Lauren Jones');
-INSERT INTO users (username, password, fullname) VALUES('nils','nils', 'Nils');
+INSERT INTO users (username, password, fullname) VALUES('waldemar','{bcrypt}$2a$10$9DxJAPBPe1SgTDjAQfJXUeg3uzU2lbEZhp/EMcX.VwYmGsBIUJFsC', 'Waldemar Vasu');
+INSERT INTO users (username, password, fullname) VALUES('karl','{bcrypt}{bcrypt}$2a$10$ln288qXFNAxWm//8zcRx8uZQ63VuY6HpKoEPzzCYwZ0CmnlgrrMmq', 'Karl Marx');
+INSERT INTO users (username, password, fullname) VALUES('alessa','{bcrypt}$2a$10$p.dfQgKWtGq3S3B/U5fX2OcjIj0kDRgyDDVCHKCrMPBYKNqH/elnu', 'Alessa Bradley');
+INSERT INTO users (username, password, fullname) VALUES('lauren','{bcrypt}$2a$10$ai4DIGUTxknaihIf3ZoTW.d2E1/hBhHgyahyR0UIWY4Rjk72gp55y', 'Lauren Jones');
+INSERT INTO users (username, password, fullname) VALUES('nils','{bcrypt}$2a$10$apLd1p1HGXiZwTbSTRZ1Euz.Woi3nDRQJvbdGoT5lhYKDFz2be1XG', 'Nils');
 -- @formatter:on
 
 -- -- @formatter:off

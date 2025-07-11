@@ -665,9 +665,9 @@ components:
       properties:
         id:
           type: string
-        title:
-          type: string
         mealType:
+          type: string
+        title:
           type: string
     GetSearchDetailResponse:
       required:
