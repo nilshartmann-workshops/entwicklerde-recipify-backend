@@ -5,6 +5,9 @@ info:
 servers:
 - url: http://localhost:8080
   description: Generated server url
+tags:
+- name: Admin
+  description: Admin Endpoints
 paths:
   /api/recipes/{recipeId}/feedbacks:
     get:
@@ -84,6 +87,24 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PostNewsletterRegistrationResponse"
+  /api/admin/recipe:
+    post:
+      tags:
+      - Admin
+      operationId: createRecipe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRecipeRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DetailedRecipeDto"
   /api/recipes/{recipeId}/likes:
     patch:
       tags:
@@ -311,6 +332,34 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ExploreRecipeDto"
+  /api/admin/meal-types:
+    get:
+      tags:
+      - Admin
+      operationId: getMealTypes
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MealTypeDto"
+  /api/admin/categories:
+    get:
+      tags:
+      - Admin
+      operationId: getCategories
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CategoryDto"
 components:
   schemas:
     NewFeedback:
@@ -380,100 +429,16 @@ components:
       properties:
         email:
           type: string
-    IncrementLikesResponse:
+    CreateRecipeRequest:
       required:
-      - newLikes
-      - recipeId
-      type: object
-      properties:
-        recipeId:
-          type: string
-        newLikes:
-          type: integer
-          format: int32
-    PageResponseRecipeSummaryDto:
-      required:
-      - content
-      - hasNext
-      - hasPrevious
-      - pageNumber
-      - totalPages
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: "#/components/schemas/RecipeSummaryDto"
-        pageNumber:
-          type: integer
-          format: int32
-        totalPages:
-          type: integer
-          format: int32
-        hasNext:
-          type: boolean
-        hasPrevious:
-          type: boolean
-        meta:
-          type: string
-    RecipeSummaryDto:
-      required:
-      - id
-      - mealType
-      - title
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        mealType:
-          type: string
-    CategoryDto:
-      required:
-      - description
-      - icon
-      - title
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-        title:
-          type: string
-        description:
-          type: string
-        icon:
-          type: string
-    GetSearchDetailResponse:
-      required:
-      - recipe
-      type: object
-      properties:
-        recipe:
-          $ref: "#/components/schemas/RecipeDto"
-    RecipeDto:
-      required:
-      - averageRating
-      - categories
-      - cookTime
-      - createdAt
+      - categoryIds
       - headline
-      - id
-      - likes
-      - mealType
-      - preparationTime
+      - ingredients
+      - instructions
+      - mealTypeId
       - title
-      - userFullname
       type: object
       properties:
-        id:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        userFullname:
-          type: string
         title:
           type: string
         headline:
@@ -484,42 +449,52 @@ components:
         cookTime:
           type: integer
           format: int32
-        categories:
+        mealTypeId:
+          type: string
+        categoryIds:
           type: array
           items:
-            $ref: "#/components/schemas/CategoryDto"
-        mealType:
-          type: string
-        averageRating:
-          type: number
-          format: double
-        likes:
-          type: integer
-          format: int32
-    PageResponseRecipeDto:
+            type: string
+        instructions:
+          type: array
+          items:
+            type: string
+        ingredients:
+          type: array
+          items:
+            $ref: "#/components/schemas/IngredientRequest"
+    IngredientRequest:
       required:
-      - content
-      - hasNext
-      - hasPrevious
-      - pageNumber
-      - totalPages
+      - amount
+      - name
+      - unit
       type: object
       properties:
-        content:
-          type: array
-          items:
-            $ref: "#/components/schemas/RecipeDto"
-        pageNumber:
-          type: integer
-          format: int32
-        totalPages:
-          type: integer
-          format: int32
-        hasNext:
-          type: boolean
-        hasPrevious:
-          type: boolean
-        meta:
+        amount:
+          type: number
+          format: double
+        unit:
+          type: string
+        name:
+          type: string
+    CategoryDto:
+      required:
+      - description
+      - icon
+      - id
+      - title
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        icon:
           type: string
     DetailedRecipeDto:
       required:
@@ -575,13 +550,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Ingredient"
-    GetRecipeResponse:
-      required:
-      - recipe
-      type: object
-      properties:
-        recipe:
-          $ref: "#/components/schemas/DetailedRecipeDto"
     Ingredient:
       required:
       - amount
@@ -608,6 +576,138 @@ components:
           format: int32
         description:
           type: string
+    RecipeDto:
+      required:
+      - averageRating
+      - categories
+      - cookTime
+      - createdAt
+      - headline
+      - id
+      - likes
+      - mealType
+      - preparationTime
+      - title
+      - userFullname
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        userFullname:
+          type: string
+        title:
+          type: string
+        headline:
+          type: string
+        preparationTime:
+          type: integer
+          format: int32
+        cookTime:
+          type: integer
+          format: int32
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryDto"
+        mealType:
+          type: string
+        averageRating:
+          type: number
+          format: double
+        likes:
+          type: integer
+          format: int32
+    IncrementLikesResponse:
+      required:
+      - newLikes
+      - recipeId
+      type: object
+      properties:
+        recipeId:
+          type: string
+        newLikes:
+          type: integer
+          format: int32
+    PageResponseRecipeSummaryDto:
+      required:
+      - content
+      - hasNext
+      - hasPrevious
+      - pageNumber
+      - totalPages
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeSummaryDto"
+        pageNumber:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        hasNext:
+          type: boolean
+        hasPrevious:
+          type: boolean
+        meta:
+          type: string
+    RecipeSummaryDto:
+      required:
+      - id
+      - mealType
+      - title
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        mealType:
+          type: string
+    GetSearchDetailResponse:
+      required:
+      - recipe
+      type: object
+      properties:
+        recipe:
+          $ref: "#/components/schemas/RecipeDto"
+    PageResponseRecipeDto:
+      required:
+      - content
+      - hasNext
+      - hasPrevious
+      - pageNumber
+      - totalPages
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeDto"
+        pageNumber:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        hasNext:
+          type: boolean
+        hasPrevious:
+          type: boolean
+        meta:
+          type: string
+    GetRecipeResponse:
+      required:
+      - recipe
+      type: object
+      properties:
+        recipe:
+          $ref: "#/components/schemas/DetailedRecipeDto"
     GetRecipeIngredientsResponse:
       required:
       - id
@@ -666,4 +766,11 @@ components:
         title:
           type: string
         mealType:
+          type: string
+    MealTypeDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
           type: string

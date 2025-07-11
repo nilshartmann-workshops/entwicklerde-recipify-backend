@@ -1,19 +1,19 @@
 package nh.recipify.domain.model;
 
+import io.swagger.v3.oas.models.links.Link;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "recipes")
+@EntityListeners(AuditingEntityListener.class)
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,10 +50,10 @@ public class Recipe {
     @JoinColumn(name = "meal_type_id", nullable = false)
     private MealType mealType;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Ingredient> ingredients;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Instruction> instructions;
 
     @OneToMany(mappedBy = "recipe")
@@ -72,6 +72,21 @@ public class Recipe {
         inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<Category> categories = new HashSet<>();
+
+    protected Recipe() {}
+
+    public Recipe(User user, String title, String headline, int preparationTime, int cookTime, MealType mealType, Set<Category> categories) {
+        this.user = user;
+        this.title = title;
+        this.headline = headline;
+        this.preparationTime = preparationTime;
+        this.cookTime = cookTime;
+        this.mealType = mealType;
+        this.ingredients = new LinkedList<>();
+        this.instructions = new LinkedList<>();
+        this.categories = categories;
+        this.feedbacks = new LinkedList<>();
+    }
 
     public Long getId() {
         return id;
@@ -144,6 +159,31 @@ public class Recipe {
             .collect(Collectors.toList());
     }
 
+    public void addInstruction(int orderNo, String description) {
+        var instruction = new Instruction(this, orderNo, description);
+        if (this.instructions == null) {
+            this.instructions = new LinkedList<>();
+        }
+
+        this.instructions.add(instruction);
+    }
+
+    public void addIngredient(int orderNo, double amount, String unit, String name) {
+        var ingredient = new Ingredient(
+            this,
+            orderNo,
+            amount,
+            unit,
+            name
+        );
+
+        if (this.ingredients == null) {
+            this.ingredients = new LinkedList<>();
+        }
+
+        this.ingredients.add(ingredient);
+    }
+
     @Override
     public String toString() {
         return "Recipe{" +
@@ -155,6 +195,7 @@ public class Recipe {
                ", headline='" + headline + '\'' +
                ", preparationTime=" + preparationTime +
                ", cookTime=" + cookTime +
+               ", totalTime=" + totalTime +
                ", difficulty=" + mealType +
                ", ingredients=" + ingredients +
                ", instructions=" + instructions +

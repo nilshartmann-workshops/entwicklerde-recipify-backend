@@ -33,6 +33,10 @@ public class Category {
         return description;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Category{" +

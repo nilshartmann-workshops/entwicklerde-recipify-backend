@@ -1,0 +1,45 @@
+POST http://localhost:8080/api/admin/recipe
+Content-Type: application/json
+
+{
+  "title": "Spaghetti Carbonara",
+  "headline": "Klassische italienische Pasta mit cremiger Sauce",
+  "preparationTime": 15,
+  "cookTime": 20,
+  "mealTypeId": "1",
+  "categoryIds": ["1", "2"],
+  "instructions": [
+    "Spaghetti in reichlich Salzwasser nach Packungsanweisung kochen",
+    "Pancetta in einer Pfanne knusprig anbraten",
+    "Eier mit Parmesan und Pfeffer verquirlen",
+    "Heiße Pasta mit der Ei-Käse-Mischung vermengen",
+    "Pancetta unterheben und sofort servieren"
+  ],
+  "ingredients": [
+    {
+      "amount": 400,
+      "unit": "g",
+      "name": "Spaghetti"
+    },
+    {
+      "amount": 150,
+      "unit": "g",
+      "name": "Pancetta"
+    },
+    {
+      "amount": 4,
+      "unit": "Stück",
+      "name": "Eigelb"
+    },
+    {
+      "amount": 100,
+      "unit": "g",
+      "name": "Parmesan"
+    },
+    {
+      "amount": 1,
+      "unit": "TL",
+      "name": "schwarzer Pfeffer"
+    }
+  ]
+}

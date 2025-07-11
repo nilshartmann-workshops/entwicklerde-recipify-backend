@@ -35,6 +35,17 @@ public class Ingredient {
     @Column(nullable = false)
     private Integer orderNo;
 
+
+    protected Ingredient() {}
+
+    Ingredient(Recipe recipe, int orderNo, Double amount, String unit, String name) {
+        this.recipe = recipe;
+        this.name = name;
+        this.amount = amount;
+        this.unit = unit;
+        this.orderNo = orderNo;
+    }
+
     public Long getId() {
         return id;
     }

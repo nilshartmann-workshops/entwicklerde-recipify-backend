@@ -1305,3 +1305,9 @@ UPDATE recipes SET likes = 45 WHERE recipes.id = 36;
 UPDATE recipes SET likes = 73 WHERE recipes.id = 37;
 UPDATE recipes SET likes = 92 WHERE recipes.id = 38;
 UPDATE recipes SET likes = 52 WHERE recipes.id = 39;
+
+-- Setze die Sequenz für recipes auf den nächsten verfügbaren Wert
+SELECT setval('recipes_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM recipes), false);
+SELECT setval('ingredients_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM ingredients), false);
+SELECT setval('instructions_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM instructions), false);
+SELECT setval('feedbacks_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM feedbacks), false);

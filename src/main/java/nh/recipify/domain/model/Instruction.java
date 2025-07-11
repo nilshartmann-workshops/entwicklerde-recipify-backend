@@ -24,6 +24,14 @@ public class Instruction {
     @Column(nullable = false)
     private String description;
 
+    protected Instruction() {}
+
+    public Instruction(Recipe recipe, Integer orderNo, String description) {
+        this.recipe = recipe;
+        this.orderNo = orderNo;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
     }
