@@ -40,7 +40,8 @@ CREATE TABLE recipes (
     average_rating   NUMERIC(10, 2) NOT NULL DEFAULT 0.0,
     meal_type_id     BIGINT         NOT NULL REFERENCES meal_types (id),
     steps            TEXT,
-    likes            INTEGER        NOT NULL DEFAULT (0)
+    likes            INTEGER        NOT NULL DEFAULT (0),
+    image            TEXT
 );
 
 CREATE OR REPLACE FUNCTION calculate_total_time()

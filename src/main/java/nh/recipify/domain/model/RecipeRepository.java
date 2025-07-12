@@ -42,7 +42,8 @@ public interface RecipeRepository extends Repository<Recipe, Long> {
                 SELECT r.id,
                        r.title,
                        mt.name AS mealType,
-                       r.created_at
+                       r.created_at,
+                       r.image
                 FROM recipes r
                 JOIN meal_types mt ON r.meal_type_id = mt.id,
                      target t
@@ -54,7 +55,8 @@ public interface RecipeRepository extends Repository<Recipe, Long> {
                 SELECT r.id,
                        r.title,
                        mt.name AS mealType,
-                       r.created_at
+                       r.created_at,
+                       r.image
                 FROM recipes r
                 JOIN meal_types mt ON r.meal_type_id = mt.id,
                      target t
@@ -62,7 +64,7 @@ public interface RecipeRepository extends Repository<Recipe, Long> {
                 ORDER BY r.created_at ASC
                 LIMIT 2
             )
-            SELECT id, title, mealType
+            SELECT id, title, mealType, image
             FROM (
                 SELECT * FROM older
                 UNION ALL

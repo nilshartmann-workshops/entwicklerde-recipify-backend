@@ -1306,6 +1306,10 @@ UPDATE recipes SET likes = 73 WHERE recipes.id = 37;
 UPDATE recipes SET likes = 92 WHERE recipes.id = 38;
 UPDATE recipes SET likes = 52 WHERE recipes.id = 39;
 
+UPDATE recipes
+    SET image = '/images/recipes/food_' || id || '.png'
+    WHERE image IS NULL;
+
 -- Setze die Sequenz für recipes auf den nächsten verfügbaren Wert
 SELECT setval('recipes_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM recipes), false);
 SELECT setval('ingredients_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM ingredients), false);

@@ -7,11 +7,13 @@ public class ExploreRecipeDto {
     private final @NotNull String id;
     private final @NotNull String title;
     private final @NotNull String mealType;
+    private final @NotNull String image;
 
-    ExploreRecipeDto(long id, String title, String mealType) {
+    ExploreRecipeDto(long id, String title, String mealType, String image) {
         this.id = String.valueOf(id);
         this.title = title;
         this.mealType = mealType;
+        this.image = image;
     }
 
     public String getId() {
@@ -24,5 +26,12 @@ public class ExploreRecipeDto {
 
     public String getMealType() {
         return mealType;
+    }
+
+    public String getImage() {
+        if (image == null) {
+            return "/images/recipes/placeholder.png";
+        }
+        return image;
     }
 }

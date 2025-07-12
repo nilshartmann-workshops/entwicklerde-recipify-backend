@@ -433,6 +433,7 @@ components:
       required:
       - categoryIds
       - headline
+      - image
       - ingredients
       - instructions
       - mealTypeId
@@ -463,6 +464,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/IngredientRequest"
+        image:
+          type: string
     IngredientRequest:
       required:
       - amount
@@ -504,6 +507,7 @@ components:
       - createdAt
       - headline
       - id
+      - image
       - ingredients
       - instructions
       - likes
@@ -542,6 +546,8 @@ components:
         likes:
           type: integer
           format: int32
+        image:
+          type: string
         instructions:
           type: array
           items:
@@ -584,6 +590,7 @@ components:
       - createdAt
       - headline
       - id
+      - image
       - likes
       - mealType
       - preparationTime
@@ -620,6 +627,8 @@ components:
         likes:
           type: integer
           format: int32
+        image:
+          type: string
     IncrementLikesResponse:
       required:
       - newLikes
@@ -757,6 +766,7 @@ components:
     ExploreRecipeDto:
       required:
       - id
+      - image
       - mealType
       - title
       type: object
@@ -766,6 +776,8 @@ components:
         title:
           type: string
         mealType:
+          type: string
+        image:
           type: string
     MealTypeDto:
       type: object

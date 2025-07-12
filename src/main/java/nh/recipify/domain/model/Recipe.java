@@ -65,6 +65,9 @@ public class Recipe {
     @Column(nullable = false)
     private int likes;
 
+    @Column
+    private String image;
+
     @ManyToMany
     @JoinTable(
         name = "recipe_categories",
@@ -75,7 +78,7 @@ public class Recipe {
 
     protected Recipe() {}
 
-    public Recipe(User user, String title, String headline, int preparationTime, int cookTime, MealType mealType, Set<Category> categories) {
+    public Recipe(User user, String title, String headline, int preparationTime, int cookTime, MealType mealType, Set<Category> categories, String image) {
         this.user = user;
         this.title = title;
         this.headline = headline;
@@ -86,6 +89,7 @@ public class Recipe {
         this.instructions = new LinkedList<>();
         this.categories = categories;
         this.feedbacks = new LinkedList<>();
+        this.image = image;
     }
 
     public Long getId() {
@@ -150,6 +154,10 @@ public class Recipe {
 
     public void likeRecipe() {
         this.likes = this.likes + 1;
+    }
+
+    public Optional<String> getImage() {
+        return Optional.ofNullable(image);
     }
 
     public List<Category> getCategories() {
