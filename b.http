@@ -8,5 +8,13 @@ Content-Type: application/json
 
 ###
 
+GET http://localhost:8080/api/admin/me
+
+###
+
+POST http://localhost:8080/api/logout
+Content-Type: application/json
+
+###
 
 GET http://localhost:8080/api/recipes/1/explore

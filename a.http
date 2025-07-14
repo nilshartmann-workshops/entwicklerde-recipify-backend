@@ -8,7 +8,6 @@ GET http://127.0.0.1:8080/api/recipes/1
 
 POST http://localhost:8080/api/admin/recipe
 Content-Type: application/json
-X-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3YWxkZW1hciIsImlhdCI6MTc1MjIxNTU1NywiZXhwIjoxNzUyMzAxOTU3fQ.nE0n28Kau5n3sCu0bmzqAb8RUbyGNOcyanyCmvF2LGQ
 
 {
   "title": "Spaghetti Carbonara",

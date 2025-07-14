@@ -1,6 +1,9 @@
 package nh.recipify.domain.api.admin;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import nh.recipify.WebConfigProps;
@@ -12,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +52,20 @@ class AdminController {
         this.categoryRepository = categoryRepository;
         this.recipeRepository = recipeRepository;
         this.userRepository = userRepository;
+    }
+
+    record MeDto(@NotNull String fullname) {}
+
+    @GetMapping("me")
+    public ResponseEntity<MeDto> getMe(@AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+
+        User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        return ResponseEntity.ok(new MeDto(
+            user.getFullname())
+        );
     }
 
     @GetMapping("meal-types")

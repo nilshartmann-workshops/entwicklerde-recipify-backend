@@ -346,6 +346,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/MealTypeDto"
+  /api/admin/me:
+    get:
+      tags:
+      - Admin
+      operationId: getMe
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/MeDto"
   /api/admin/categories:
     get:
       tags:
@@ -785,4 +797,11 @@ components:
         id:
           type: string
         name:
+          type: string
+    MeDto:
+      required:
+      - fullname
+      type: object
+      properties:
+        fullname:
           type: string

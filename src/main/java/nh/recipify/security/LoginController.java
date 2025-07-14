@@ -1,6 +1,7 @@
 package nh.recipify.security;
 
 import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -40,13 +41,15 @@ class LoginController {
     }
 
     record LoginResponse(
-        @NotNull String token
+        String message
     ) {
     }
 
     @PostMapping("/api/login")
     @Valid
-    public ResponseEntity<@Valid LoginResponse> login(@RequestBody @Valid LoginRequest request) {
+    public ResponseEntity<@Valid LoginResponse> login(
+            @RequestBody @Valid LoginRequest request,
+            HttpServletResponse response) {
         log.info("LOGIN CONTROLLER INVOKED {}", request);
 
         Authentication auth = authenticationManager.authenticate(
@@ -56,8 +59,19 @@ class LoginController {
             )
         );
         String token = jwtUtil.generateToken(request.username());
+
+        // Set the JWT token as HTTP-only cookie
+        jwtUtil.createCookie(response, token);
+
         return ResponseEntity.ok(
-            new LoginResponse(token)
+            new LoginResponse("Login successful")
         );
+    }
+
+    @PostMapping("/api/logout")
+    public ResponseEntity<LoginResponse> logout(HttpServletResponse response) {
+        // Clear the JWT cookie
+        jwtUtil.clearCookie(response);
+        return ResponseEntity.ok(new LoginResponse("Logout successful"));
     }
 }
