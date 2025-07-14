@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: "temurin" # See 'Supported distributions' for available options
-          java-version: "21"
+          java-version: "24"
       - run: ./mvnw --no-transfer-progress -DskipTests package
       - name: Get short SHA
         id: sha
@@ -41,5 +41,5 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: |
-            ghcr.io/${{ github.actor }}/recipify-backend:latest
-            ghcr.io/${{ github.actor }}/recipify-backend:${{ steps.sha.outputs.short }}
+            ghcr.io/${{ github.actor }}/entwicklerde-recipify-backend:latest
+            ghcr.io/${{ github.actor }}/entwicklerde-recipify-backend:${{ steps.sha.outputs.short }}
