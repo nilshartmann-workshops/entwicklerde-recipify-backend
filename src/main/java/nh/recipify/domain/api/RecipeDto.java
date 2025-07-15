@@ -7,6 +7,8 @@ import nh.recipify.domain.model.Recipe;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static nh.recipify.domain.api.ImageDto.emptyImage;
+
 public record RecipeDto(
 
     @NotNull String id,
@@ -20,7 +22,7 @@ public record RecipeDto(
     @NotNull String mealType,
     @NotNull double averageRating,
     @NotNull int likes,
-    @NotNull String image
+    @NotNull ImageDto image
 ) {
 
     public static RecipeDto forRecipe(Recipe r) {
@@ -36,7 +38,7 @@ public record RecipeDto(
             r.getMealType().getName(),
             r.getFeedbacks().stream().mapToInt(Feedback::getRating).average().orElse(0),
             r.getLikes(),
-            r.getImage().orElse("/images/recipes/placeholder.png")
+            r.getImage().map(ImageDto::ofImage).orElse(emptyImage)
         );
     }
 

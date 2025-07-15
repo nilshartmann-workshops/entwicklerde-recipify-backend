@@ -559,7 +559,7 @@ components:
           type: integer
           format: int32
         image:
-          type: string
+          $ref: "#/components/schemas/ImageDto"
         instructions:
           type: array
           items:
@@ -568,6 +568,19 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Ingredient"
+    ImageDto:
+      required:
+      - id
+      - src
+      - title
+      type: object
+      properties:
+        id:
+          type: string
+        src:
+          type: string
+        title:
+          type: string
     Ingredient:
       required:
       - amount
@@ -640,7 +653,7 @@ components:
           type: integer
           format: int32
         image:
-          type: string
+          $ref: "#/components/schemas/ImageDto"
     IncrementLikesResponse:
       required:
       - newLikes
@@ -790,7 +803,7 @@ components:
         mealType:
           type: string
         image:
-          type: string
+          $ref: "#/components/schemas/ImageDto"
     MealTypeDto:
       type: object
       properties:

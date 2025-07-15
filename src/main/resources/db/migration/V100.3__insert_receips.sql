@@ -1266,52 +1266,138 @@ INSERT INTO public.instructions (id, recipe_id, description, order_no) VALUES (1
 -- @formatter:on
 
 
-UPDATE recipes SET likes = 35 WHERE recipes.id = 1;
-UPDATE recipes SET likes = 87 WHERE recipes.id = 2;
-UPDATE recipes SET likes = 42 WHERE recipes.id = 3;
-UPDATE recipes SET likes = 15 WHERE recipes.id = 4;
-UPDATE recipes SET likes = 120 WHERE recipes.id = 5;
-UPDATE recipes SET likes = 101 WHERE recipes.id = 6;
-UPDATE recipes SET likes = 18 WHERE recipes.id = 7;
-UPDATE recipes SET likes = 75 WHERE recipes.id = 8;
-UPDATE recipes SET likes = 122 WHERE recipes.id = 9;
-UPDATE recipes SET likes = 12 WHERE recipes.id = 10;
-UPDATE recipes SET likes = 56 WHERE recipes.id = 11;
-UPDATE recipes SET likes = 89 WHERE recipes.id = 12;
-UPDATE recipes SET likes = 37 WHERE recipes.id = 13;
-UPDATE recipes SET likes = 77 WHERE recipes.id = 14;
-UPDATE recipes SET likes = 24 WHERE recipes.id = 15;
-UPDATE recipes SET likes = 92 WHERE recipes.id = 16;
-UPDATE recipes SET likes = 68 WHERE recipes.id = 17;
-UPDATE recipes SET likes = 54 WHERE recipes.id = 18;
-UPDATE recipes SET likes = 118 WHERE recipes.id = 19;
-UPDATE recipes SET likes = 59 WHERE recipes.id = 20;
-UPDATE recipes SET likes = 41 WHERE recipes.id = 21;
-UPDATE recipes SET likes = 103 WHERE recipes.id = 22;
-UPDATE recipes SET likes = 50 WHERE recipes.id = 23;
-UPDATE recipes SET likes = 79 WHERE recipes.id = 24;
-UPDATE recipes SET likes = 15 WHERE recipes.id = 25;
-UPDATE recipes SET likes = 125 WHERE recipes.id = 26;
-UPDATE recipes SET likes = 58 WHERE recipes.id = 27;
-UPDATE recipes SET likes = 83 WHERE recipes.id = 28;
-UPDATE recipes SET likes = 100 WHERE recipes.id = 29;
-UPDATE recipes SET likes = 67 WHERE recipes.id = 30;
-UPDATE recipes SET likes = 33 WHERE recipes.id = 31;
-UPDATE recipes SET likes = 85 WHERE recipes.id = 32;
-UPDATE recipes SET likes = 60 WHERE recipes.id = 33;
-UPDATE recipes SET likes = 48 WHERE recipes.id = 34;
-UPDATE recipes SET likes = 25 WHERE recipes.id = 35;
-UPDATE recipes SET likes = 45 WHERE recipes.id = 36;
-UPDATE recipes SET likes = 73 WHERE recipes.id = 37;
-UPDATE recipes SET likes = 92 WHERE recipes.id = 38;
-UPDATE recipes SET likes = 52 WHERE recipes.id = 39;
+UPDATE recipes
+SET likes = 35
+WHERE recipes.id = 1;
+UPDATE recipes
+SET likes = 87
+WHERE recipes.id = 2;
+UPDATE recipes
+SET likes = 42
+WHERE recipes.id = 3;
+UPDATE recipes
+SET likes = 15
+WHERE recipes.id = 4;
+UPDATE recipes
+SET likes = 120
+WHERE recipes.id = 5;
+UPDATE recipes
+SET likes = 101
+WHERE recipes.id = 6;
+UPDATE recipes
+SET likes = 18
+WHERE recipes.id = 7;
+UPDATE recipes
+SET likes = 75
+WHERE recipes.id = 8;
+UPDATE recipes
+SET likes = 122
+WHERE recipes.id = 9;
+UPDATE recipes
+SET likes = 12
+WHERE recipes.id = 10;
+UPDATE recipes
+SET likes = 56
+WHERE recipes.id = 11;
+UPDATE recipes
+SET likes = 89
+WHERE recipes.id = 12;
+UPDATE recipes
+SET likes = 37
+WHERE recipes.id = 13;
+UPDATE recipes
+SET likes = 77
+WHERE recipes.id = 14;
+UPDATE recipes
+SET likes = 24
+WHERE recipes.id = 15;
+UPDATE recipes
+SET likes = 92
+WHERE recipes.id = 16;
+UPDATE recipes
+SET likes = 68
+WHERE recipes.id = 17;
+UPDATE recipes
+SET likes = 54
+WHERE recipes.id = 18;
+UPDATE recipes
+SET likes = 118
+WHERE recipes.id = 19;
+UPDATE recipes
+SET likes = 59
+WHERE recipes.id = 20;
+UPDATE recipes
+SET likes = 41
+WHERE recipes.id = 21;
+UPDATE recipes
+SET likes = 103
+WHERE recipes.id = 22;
+UPDATE recipes
+SET likes = 50
+WHERE recipes.id = 23;
+UPDATE recipes
+SET likes = 79
+WHERE recipes.id = 24;
+UPDATE recipes
+SET likes = 15
+WHERE recipes.id = 25;
+UPDATE recipes
+SET likes = 125
+WHERE recipes.id = 26;
+UPDATE recipes
+SET likes = 58
+WHERE recipes.id = 27;
+UPDATE recipes
+SET likes = 83
+WHERE recipes.id = 28;
+UPDATE recipes
+SET likes = 100
+WHERE recipes.id = 29;
+UPDATE recipes
+SET likes = 67
+WHERE recipes.id = 30;
+UPDATE recipes
+SET likes = 33
+WHERE recipes.id = 31;
+UPDATE recipes
+SET likes = 85
+WHERE recipes.id = 32;
+UPDATE recipes
+SET likes = 60
+WHERE recipes.id = 33;
+UPDATE recipes
+SET likes = 48
+WHERE recipes.id = 34;
+UPDATE recipes
+SET likes = 25
+WHERE recipes.id = 35;
+UPDATE recipes
+SET likes = 45
+WHERE recipes.id = 36;
+UPDATE recipes
+SET likes = 73
+WHERE recipes.id = 37;
+UPDATE recipes
+SET likes = 92
+WHERE recipes.id = 38;
+UPDATE recipes
+SET likes = 52
+WHERE recipes.id = 39;
+
+INSERT INTO images (title, path)
+SELECT r.title,
+       '/images/recipes/food_' || r.id || '.png'
+FROM recipes r;
 
 UPDATE recipes
-    SET image = '/images/recipes/food_' || id || '.png'
-    WHERE image IS NULL;
+SET image_id = i.id
+FROM images i
+WHERE recipes.title = i.title;
 
--- Setze die Sequenz für recipes auf den nächsten verfügbaren Wert
-SELECT setval('recipes_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM recipes), false);
-SELECT setval('ingredients_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM ingredients), false);
-SELECT setval('instructions_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM instructions), false);
-SELECT setval('feedbacks_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM feedbacks), false);
+
+-- Bisschen rustikaler Ansatz hier, aber so wissen wir, dass
+-- alle IDs ab 1000 NICHT vom initialen Setup kommen
+ALTER SEQUENCE recipes_id_seq RESTART WITH 1000;
+ALTER SEQUENCE ingredients_id_seq RESTART WITH 1000;
+ALTER SEQUENCE instructions_id_seq RESTART WITH 1000;
+ALTER SEQUENCE feedbacks_id_seq RESTART WITH 1000;

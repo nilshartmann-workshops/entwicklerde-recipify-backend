@@ -65,8 +65,9 @@ public class Recipe {
     @Column(nullable = false)
     private int likes;
 
-    @Column
-    private String image;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_id", nullable = true)
+    private Image image;
 
     @ManyToMany
     @JoinTable(
@@ -89,7 +90,7 @@ public class Recipe {
         this.instructions = new LinkedList<>();
         this.categories = categories;
         this.feedbacks = new LinkedList<>();
-        this.image = image;
+        this.image = null;
     }
 
     public Long getId() {
@@ -156,7 +157,7 @@ public class Recipe {
         this.likes = this.likes + 1;
     }
 
-    public Optional<String> getImage() {
+    public Optional<Image> getImage() {
         return Optional.ofNullable(image);
     }
 

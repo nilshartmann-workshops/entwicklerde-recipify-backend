@@ -43,9 +43,12 @@ public interface RecipeRepository extends Repository<Recipe, Long> {
                        r.title,
                        mt.name AS mealType,
                        r.created_at,
-                       r.image
+                       i.id as imageId,
+                       i.path AS imagePath,
+                       i.title AS imageTitle
                 FROM recipes r
-                JOIN meal_types mt ON r.meal_type_id = mt.id,
+                JOIN meal_types mt ON r.meal_type_id = mt.id
+                LEFT JOIN images i ON r.image_id = i.id,
                      target t
                 WHERE r.created_at < t.created_at
                 ORDER BY r.created_at DESC
@@ -56,15 +59,18 @@ public interface RecipeRepository extends Repository<Recipe, Long> {
                        r.title,
                        mt.name AS mealType,
                        r.created_at,
-                       r.image
+                       i.id as imageId,
+                       i.path AS imagePath,
+                       i.title AS imageTitle
                 FROM recipes r
-                JOIN meal_types mt ON r.meal_type_id = mt.id,
+                JOIN meal_types mt ON r.meal_type_id = mt.id
+                LEFT JOIN images i ON r.image_id = i.id,
                      target t
                 WHERE r.created_at > t.created_at
                 ORDER BY r.created_at ASC
                 LIMIT 2
             )
-            SELECT id, title, mealType, image
+            SELECT id, title, mealType, imageId, imagePath, imageTitle
             FROM (
                 SELECT * FROM older
                 UNION ALL
