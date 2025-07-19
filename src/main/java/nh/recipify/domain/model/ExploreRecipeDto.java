@@ -9,15 +9,15 @@ public class ExploreRecipeDto {
     private final @NotNull String mealType;
     private final @NotNull ImageDto image;
 
-    ExploreRecipeDto(long id, String title, String mealType, Long imageId, String imagePath, String imageTitle) {
+    ExploreRecipeDto(long id, String title, String mealType, Long imageId, String imageSrc, String imageTitle) {
         this.id = String.valueOf(id);
         this.title = title;
         this.mealType = mealType;
         this.image = imageId == null
-                     || imagePath == null
+                     || imageSrc == null
                      || imageTitle == null
             ? ImageDto.emptyImage
-            : new ImageDto(String.valueOf(imageId), imagePath, imageTitle);
+            : new ImageDto(String.valueOf(imageId), imageSrc, imageTitle);
     }
 
     public String getId() {

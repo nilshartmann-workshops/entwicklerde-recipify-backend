@@ -83,4 +83,8 @@ public class Ingredient {
     public String toString() {
         return "Ingredient{" + "id=" + id + ", name='" + name + '\'' + ", amount=" + amount + ", unit='" + unit + '\'' + ", orderNo=" + orderNo + '}';
     }
+
+     void removeFromRecipe() {
+        this.recipe = null;
+    }
 }

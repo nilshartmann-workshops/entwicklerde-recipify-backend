@@ -65,4 +65,8 @@ public class Instruction {
                ", orderNo=" + orderNo +
                '}';
     }
+
+    void removeFromRecipe() {
+        this.recipe = null;
+    }
 }

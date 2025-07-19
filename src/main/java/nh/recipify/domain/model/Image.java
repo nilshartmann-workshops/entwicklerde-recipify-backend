@@ -3,12 +3,16 @@ package nh.recipify.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
 @Entity
 @Table(name = "images")
+@EntityListeners(AuditingEntityListener.class)
 public class Image {
 
     @Id
@@ -16,17 +20,21 @@ public class Image {
     @JsonIgnore
     private Long id;
 
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
     @NotNull
     private String title;
 
     @NotNull
-    private String path;
+    private String src;
 
     protected Image(){}
 
-    public Image(String title, String path) {
+    public Image(String title, String src) {
         this.title = title;
-        this.path = path;
+        this.src = src;
     }
 
     public Long getId() {
@@ -37,8 +45,8 @@ public class Image {
         return title;
     }
 
-    public String getPath() {
-        return path;
+    public String getSrc() {
+        return src;
     }
 
     @Override

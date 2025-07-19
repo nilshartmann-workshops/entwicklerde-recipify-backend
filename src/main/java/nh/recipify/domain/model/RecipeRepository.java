@@ -44,7 +44,7 @@ public interface RecipeRepository extends Repository<Recipe, Long> {
                        mt.name AS mealType,
                        r.created_at,
                        i.id as imageId,
-                       i.path AS imagePath,
+                       i.src AS imageSrc,
                        i.title AS imageTitle
                 FROM recipes r
                 JOIN meal_types mt ON r.meal_type_id = mt.id
@@ -60,7 +60,7 @@ public interface RecipeRepository extends Repository<Recipe, Long> {
                        mt.name AS mealType,
                        r.created_at,
                        i.id as imageId,
-                       i.path AS imagePath,
+                       i.src AS imageSrc,
                        i.title AS imageTitle
                 FROM recipes r
                 JOIN meal_types mt ON r.meal_type_id = mt.id
@@ -70,7 +70,7 @@ public interface RecipeRepository extends Repository<Recipe, Long> {
                 ORDER BY r.created_at ASC
                 LIMIT 2
             )
-            SELECT id, title, mealType, imageId, imagePath, imageTitle
+            SELECT id, title, mealType, imageId, imageSrc, imageTitle
             FROM (
                 SELECT * FROM older
                 UNION ALL
@@ -80,6 +80,9 @@ public interface RecipeRepository extends Repository<Recipe, Long> {
             
             """)
     List<ExploreRecipeDto> findExploreRecipes(long recipeId);
+
+    Recipe saveAndFlush(Recipe existingRecipe);
+
 
 //    default List<RecipeSummaryDto> findExploreRecipes(long recipeId) {
 //        List<Object[]> rows = _internal_findExploreRecipes(recipeId);

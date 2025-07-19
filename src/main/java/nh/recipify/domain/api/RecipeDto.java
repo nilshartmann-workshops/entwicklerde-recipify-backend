@@ -20,7 +20,6 @@ public record RecipeDto(
     @NotNull int cookTime,
     @NotNull List<CategoryDto> categories,
     @NotNull String mealType,
-    @NotNull double averageRating,
     @NotNull int likes,
     @NotNull ImageDto image
 ) {
@@ -36,9 +35,8 @@ public record RecipeDto(
             r.getCookTime(),
             r.getCategories().stream().map(CategoryDto::of).toList(),
             r.getMealType().getName(),
-            r.getFeedbacks().stream().mapToInt(Feedback::getRating).average().orElse(0),
             r.getLikes(),
-            r.getImage().map(ImageDto::ofImage).orElse(emptyImage)
+            r.getImage().map(ImageDto::of).orElse(emptyImage)
         );
     }
 

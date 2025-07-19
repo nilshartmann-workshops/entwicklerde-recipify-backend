@@ -1384,7 +1384,7 @@ UPDATE recipes
 SET likes = 52
 WHERE recipes.id = 39;
 
-INSERT INTO images (title, path)
+INSERT INTO images (title, src)
 SELECT r.title,
        '/images/recipes/food_' || r.id || '.png'
 FROM recipes r;

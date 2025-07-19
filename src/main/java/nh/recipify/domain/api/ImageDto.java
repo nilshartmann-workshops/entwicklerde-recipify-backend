@@ -9,10 +9,10 @@ public record ImageDto(
     @NotNull String title
 ) {
 
-    static ImageDto ofImage(Image image) {
+    public static ImageDto of(Image image) {
         return new ImageDto(
             String.valueOf(image.getId()),
-            image.getPath(),
+            image.getSrc(),
             image.getTitle()
         );
     }

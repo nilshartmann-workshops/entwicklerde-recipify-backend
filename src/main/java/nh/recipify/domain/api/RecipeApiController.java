@@ -3,6 +3,7 @@ package nh.recipify.domain.api;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import nh.recipify.domain.FeedbackDto;
 import nh.recipify.domain.FeedbackService;
 import nh.recipify.domain.NewFeedback;
 import nh.recipify.domain.model.*;
@@ -126,30 +127,8 @@ public class RecipeApiController {
         );
     }
 
-    record GetRecipeFeedbacksResponse(@NotNull List<Feedback> feedbacks) {
-    }
-
-    /**
-     * todo:... use getFeedback instead
-     * <p>
-     * todo: endpoint is used in the tanstack router demo. remove it there
-     *
-     * @param recipeId
-     * @param slowDown_GetFeedbacks
-     * @return
-     */
-    @GetMapping("/recipes/{recipeId}/feedbacks")
-    GetRecipeFeedbacksResponse getFeedbacks(@StringParameter @PathVariable long recipeId,
-                                            @RequestParam("slowdown") Optional<Long> slowDown_GetFeedbacks) {
-        sleepFor("Get Feedbacks for recipeId " + recipeId, slowDown_GetFeedbacks);
-
-        var feedbacks = feedbackRepository.getFeedbackByRecipeIdOrderByCreatedAtDesc(recipeId);
-
-        return new GetRecipeFeedbacksResponse(feedbacks);
-    }
-
     @GetMapping("/recipes/{recipeId}/feedback")
-    PageResponse<Feedback> getFeedback(@StringParameter @PathVariable long recipeId,
+    PageResponse<FeedbackDto> getFeedback(@StringParameter @PathVariable long recipeId,
                                        @RequestParam("page") int feedbackPage,
                                        @RequestParam("slowdown") Optional<Long> slowDown_GetFeedbacks) {
 
@@ -158,7 +137,8 @@ public class RecipeApiController {
 
         var pageRequest = PageRequest.of(feedbackPage, 2);
 
-        Page<Feedback> feedback = this.feedbackRepository.getFeedbackByRecipeIdOrderByCreatedAtDesc(recipeId, pageRequest);
+        Page<FeedbackDto> feedback = this.feedbackRepository.getFeedbackByRecipeIdAndApprovalStatusOrderByCreatedAtDesc(recipeId, ApprovalStatus.APPROVED, pageRequest)
+            .map(FeedbackDto::of);
 
         return PageResponse.of(feedback);
     }

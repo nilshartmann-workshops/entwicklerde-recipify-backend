@@ -50,14 +50,11 @@ public class Recipe {
     @JoinColumn(name = "meal_type_id", nullable = false)
     private MealType mealType;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Ingredient> ingredients;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Instruction> instructions;
-
-    @OneToMany(mappedBy = "recipe")
-    private List<Feedback> feedbacks;
 
     @Column(name = "average_rating", precision = 10, scale = 2, nullable = false, insertable = false, updatable = false)
     private BigDecimal averageRating;
@@ -79,7 +76,7 @@ public class Recipe {
 
     protected Recipe() {}
 
-    public Recipe(User user, String title, String headline, int preparationTime, int cookTime, MealType mealType, Set<Category> categories, String image) {
+    public Recipe(User user, String title, String headline, int preparationTime, int cookTime, MealType mealType, Set<Category> categories, Image image) {
         this.user = user;
         this.title = title;
         this.headline = headline;
@@ -89,8 +86,7 @@ public class Recipe {
         this.ingredients = new LinkedList<>();
         this.instructions = new LinkedList<>();
         this.categories = categories;
-        this.feedbacks = new LinkedList<>();
-        this.image = null;
+        this.image = image;
     }
 
     public Long getId() {
@@ -145,10 +141,6 @@ public class Recipe {
             .collect(Collectors.toList());
     }
 
-    public List<Feedback> getFeedbacks() {
-        return feedbacks;
-    }
-
     public int getLikes() {
         return likes;
     }
@@ -177,6 +169,21 @@ public class Recipe {
         this.instructions.add(instruction);
     }
 
+    public void removeInstructions() {
+        if (this.instructions != null) {
+            this.instructions.forEach(Instruction::removeFromRecipe);
+            this.instructions.clear();
+        }
+    }
+
+    public void removeIngredients() {
+        if (this.ingredients != null) {
+            this.ingredients.forEach(Ingredient::removeFromRecipe);
+            this.ingredients.clear();
+        }
+    }
+
+
     public void addIngredient(int orderNo, double amount, String unit, String name) {
         var ingredient = new Ingredient(
             this,
@@ -191,6 +198,35 @@ public class Recipe {
         }
 
         this.ingredients.add(ingredient);
+    }
+
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setHeadline(String headline) {
+        this.headline = headline;
+    }
+
+    public void setPreparationTime(int preparationTime) {
+        this.preparationTime = preparationTime;
+    }
+
+    public void setCookTime(int cookTime) {
+        this.cookTime = cookTime;
+    }
+
+    public void setMealType(MealType mealType) {
+        this.mealType = mealType;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 
     @Override
@@ -209,7 +245,6 @@ public class Recipe {
                ", ingredients=" + ingredients +
                ", instructions=" + instructions +
                ", categories=" + categories +
-               ", feedbacks=" + feedbacks +
                ", likes=" + likes +
                '}';
     }
