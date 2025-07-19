@@ -8,6 +8,8 @@ servers:
 tags:
 - description: Admin Endpoints
   name: Admin
+- description: Login/Logout Endpoints
+  name: Login
 paths:
   /api/admin/categories:
     get:
@@ -335,6 +337,36 @@ paths:
           description: OK
       tags:
       - Admin
+  /api/login:
+    post:
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+          description: OK
+      tags:
+      - Login
+  /api/logout:
+    post:
+      operationId: logout
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+          description: OK
+      tags:
+      - Login
   /api/newsletter/subscribe:
     post:
       operationId: subscribeToNewsletter
@@ -969,6 +1001,21 @@ components:
           type: string
       required:
       - description
+    LoginRequest:
+      type: object
+      properties:
+        password:
+          type: string
+        username:
+          type: string
+      required:
+      - password
+      - username
+    LoginResponse:
+      type: object
+      properties:
+        message:
+          type: string
     MeDto:
       type: object
       properties:
