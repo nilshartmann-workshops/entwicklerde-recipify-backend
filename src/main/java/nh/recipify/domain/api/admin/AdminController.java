@@ -139,7 +139,7 @@ class AdminController {
     }
 
     @GetMapping("recipes/{recipeId}")
-    AdminRecipeDto getRecipe(@PathVariable Long recipeId, @RequestParam Optional<Long> slowdown) {
+    AdminRecipeDto getAdminRecipe(@PathVariable Long recipeId, @RequestParam Optional<Long> slowdown) {
 
         sleepFor("API GET /recipes/" + recipeId, slowdown);
 

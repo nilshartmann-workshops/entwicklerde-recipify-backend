@@ -285,7 +285,7 @@ paths:
       - Admin
   /api/admin/recipes/{recipeId}:
     get:
-      operationId: getRecipe
+      operationId: getAdminRecipe
       parameters:
       - in: path
         name: recipeId
@@ -417,6 +417,7 @@ paths:
           - time
           - likes
           - rating
+          - createdAt
       - in: query
         name: ids
         required: false
@@ -439,7 +440,7 @@ paths:
       - recipe-api-controller
   /api/recipes/{recipeId}:
     get:
-      operationId: getRecipe_1
+      operationId: getRecipe
       parameters:
       - in: path
         name: recipeId
@@ -518,6 +519,29 @@ paths:
       tags:
       - recipe-api-controller
   /api/recipes/{recipeId}/feedbacks:
+    get:
+      operationId: getFeedbacks
+      parameters:
+      - in: path
+        name: recipeId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: slowdown
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetRecipeFeedbacksResponse"
+          description: OK
+      tags:
+      - recipe-api-controller
     post:
       operationId: addFeedback
       parameters:
@@ -883,6 +907,15 @@ components:
       - createdAt
       - id
       - rating
+    GetRecipeFeedbacksResponse:
+      type: object
+      properties:
+        feedbacks:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feedback"
+      required:
+      - feedbacks
     GetRecipeIngredientsResponse:
       type: object
       properties:

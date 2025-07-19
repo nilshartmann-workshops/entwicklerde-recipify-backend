@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface FeedbackRepository extends Repository<Feedback, Long> {
 
     @Deprecated
-    List<Feedback> getFeedbackByRecipeIdOrderByCreatedAtDesc(Long recipeId);
+    List<Feedback> getAllByRecipeIdAndApprovalStatusOrderByCreatedAtDesc(Long recipeId, ApprovalStatus status);
 
     Page<Feedback> getFeedbackByRecipeIdAndApprovalStatusOrderByCreatedAtDesc(Long recipeId, ApprovalStatus status, Pageable pageable);
 

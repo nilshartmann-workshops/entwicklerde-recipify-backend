@@ -40,7 +40,8 @@ public class RecipeApiController {
     enum ReceipeSort {
         time,
         likes,
-        rating
+        rating,
+        createdAt
     }
 
     @GetMapping("/recipes")
@@ -66,6 +67,9 @@ public class RecipeApiController {
                 }
                 if (s == ReceipeSort.rating) {
                     return Sort.by("averageRating").descending().and(Sort.by("title"));
+                }
+                if (s == ReceipeSort.createdAt) {
+                    return Sort.by("createdAt").descending().and(Sort.by("title"));
                 }
                 return Sort.by("likes").descending().and(Sort.by("title"));
             }).orElse(Sort.by("createdAt").descending()));
@@ -126,6 +130,30 @@ public class RecipeApiController {
             recipe.getIngredients()
         );
     }
+
+    record GetRecipeFeedbacksResponse(@NotNull List<Feedback> feedbacks) {
+    }
+
+    /**
+     * todo:... use getFeedback instead
+     * <p>
+     * todo: endpoint is used in the tanstack router demo. remove it there
+     *
+     * @param recipeId
+     * @param slowDown_GetFeedbacks
+     * @return
+     */
+    @GetMapping("/recipes/{recipeId}/feedbacks")
+    GetRecipeFeedbacksResponse getFeedbacks(@StringParameter @PathVariable long recipeId,
+                                            @RequestParam("slowdown") Optional<Long> slowDown_GetFeedbacks) {
+        sleepFor("Get Feedbacks for recipeId " + recipeId, slowDown_GetFeedbacks);
+
+        var feedbacks = feedbackRepository.getAllByRecipeIdAndApprovalStatusOrderByCreatedAtDesc(recipeId,
+            ApprovalStatus.APPROVED);
+
+        return new GetRecipeFeedbacksResponse(feedbacks);
+    }
+
 
     @GetMapping("/recipes/{recipeId}/feedback")
     PageResponse<FeedbackDto> getFeedback(@StringParameter @PathVariable long recipeId,
