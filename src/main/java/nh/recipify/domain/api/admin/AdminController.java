@@ -209,7 +209,11 @@ class AdminController {
 
         var feedbackCount = feedbackRepository.countByRecipeId(existingRecipe.getId());
 
-        return ResponseEntity.ok(AdminRecipeDto.of(existingRecipe, feedbackCount));
+        return ResponseEntity.ok(AdminRecipeDto.of(existingRecipe,
+            feedbackCount.getApprovedCount(),
+            feedbackCount.getRejectedCount(),
+            feedbackCount.getPendingCount())
+        );
 
     }
 
@@ -263,7 +267,7 @@ class AdminController {
 
         log.info("new recipe {}", newRecipe);
 
-        var recipeDto = AdminRecipeDto.of(newRecipe, 0);
+        var recipeDto = AdminRecipeDto.of(newRecipe, 0, 0, 0);
 
         return ResponseEntity.ok(recipeDto);
 

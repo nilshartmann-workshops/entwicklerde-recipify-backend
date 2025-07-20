@@ -32,8 +32,10 @@ interface AdminRecipeRepository extends Repository<Recipe, Long> {
 //    Page<LatestRecipeDto> findLatestRecipes(Pageable pageable);
 
     @Query(value = """
-            SELECT r AS recipe, 
-                   (SELECT COUNT(f) FROM Feedback f WHERE f.recipe = r) AS feedbackCount 
+            SELECT r AS recipe,
+                   (SELECT COUNT(f) FROM Feedback f WHERE f.approvalStatus = 'APPROVED' and f.recipe = r) AS approvedFeedbackCount,
+                   (SELECT COUNT(f) FROM Feedback f WHERE f.approvalStatus = 'PENDING' and f.recipe = r) AS approvedFeedbackPending,
+                   (SELECT COUNT(f) FROM Feedback f WHERE f.approvalStatus = 'REJECTED' and f.recipe = r) AS approvedFeedbackRejected                               
             FROM Recipe r
             ORDER BY r.createdAt DESC
             """,
@@ -42,7 +44,9 @@ interface AdminRecipeRepository extends Repository<Recipe, Long> {
 
     @Query(value = """
             SELECT r AS recipe, 
-                   (SELECT COUNT(f) FROM Feedback f WHERE f.recipe = r) AS feedbackCount 
+                   (SELECT COUNT(f) FROM Feedback f WHERE f.approvalStatus = 'APPROVED' and f.recipe = r) AS approvedFeedbackCount,
+                   (SELECT COUNT(f) FROM Feedback f WHERE f.approvalStatus = 'REJECTED' and f.recipe = r) AS approvedFeedbackRejected,                               
+                   (SELECT COUNT(f) FROM Feedback f WHERE f.approvalStatus = 'PENDING' and f.recipe = r) AS approvedFeedbackPending
             FROM Recipe r
             WHERE r.id = :id            
             """)

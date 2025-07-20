@@ -25,7 +25,10 @@ record AdminRecipeDto(
     @NotNull List<IngredientDto> ingredients,
     @NotNull ImageDto image,
     @NotNull int likes,
-    @NotNull long feedbackCount
+    @NotNull long approvedFeedbackCount,
+    @NotNull long rejectedFeedbackCount,
+    @NotNull long pendingFeedbackCount
+
 ) {
 
     record InstructionDto(
@@ -44,7 +47,11 @@ record AdminRecipeDto(
         }
     }
 
-    static AdminRecipeDto of(Recipe recipe, long feedbackCount) {
+    static AdminRecipeDto of(Recipe recipe,
+                             @NotNull long approvedFeedbackCount,
+                             @NotNull long rejectedFeedbackCount,
+                             @NotNull long pendingFeedbackCount
+    ) {
         return new AdminRecipeDto(
             String.valueOf(recipe.getId()),
             recipe.getCreatedAt(),
@@ -59,13 +66,18 @@ record AdminRecipeDto(
             recipe.getIngredients().stream().map(IngredientDto::of).toList(),
             recipe.getImage().map(ImageDto::of).orElse(ImageDto.emptyImage),
             recipe.getLikes(),
-            feedbackCount
+            approvedFeedbackCount,
+            rejectedFeedbackCount,
+            pendingFeedbackCount
         );
     }
 
     static AdminRecipeDto of(RecipeWithFeedbackCount recipeWithFeedbackCount) {
         return of(
-            recipeWithFeedbackCount.recipe(), recipeWithFeedbackCount.feedbackCount()
+            recipeWithFeedbackCount.recipe(),
+            recipeWithFeedbackCount.approvedFeedbackCount(),
+            recipeWithFeedbackCount.rejectedFeedbackCount(),
+            recipeWithFeedbackCount.pendingFeedbackCount()
         );
     }
 }

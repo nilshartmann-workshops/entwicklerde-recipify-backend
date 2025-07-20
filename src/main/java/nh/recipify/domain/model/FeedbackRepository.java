@@ -18,6 +18,7 @@ public interface FeedbackRepository extends Repository<Feedback, Long> {
 
     /**
      * Für Admin API
+     *
      * @param pageable
      * @return
      */
@@ -33,17 +34,31 @@ public interface FeedbackRepository extends Repository<Feedback, Long> {
     @Modifying
     @Query(nativeQuery = true,
         value = """
-            update feedbacks set approval_status = :#{#approvalStatus.name()}, updated_at = now() where id = :id
-"""
+                        update feedbacks set approval_status = :#{#approvalStatus.name()}, updated_at = now() where id = :id
+            """
     )
     void updateStatus(Long id, ApprovalStatus approvalStatus);
 
     @Query(nativeQuery = true,
-    value = """
-        select avg(rating) from feedbacks where recipe_id = :recipeId
-    """)
+        value = """
+                select avg(rating) from feedbacks where recipe_id = :recipeId
+            """)
     float averageRating(Long recipeId);
 
-    Long countByRecipeId(Long recipeId);
+    public interface FeedbackCountProjection {
+        Long getApprovedCount();
 
+        Long getRejectedCount();
+
+        Long getPendingCount();
+    }
+
+    @Query(nativeQuery = true, value = """
+        SELECT
+          COUNT(CASE WHEN approval_status = 'APPROVED' THEN 1 END) AS approvedCount,
+          COUNT(CASE WHEN approval_status = 'REJECTED' THEN 1 END) AS rejectedCount,
+          COUNT(CASE WHEN approval_status = 'PENDING' THEN 1 END) AS pendingCount
+        FROM feedbacks WHERE recipe_id = :recipeId
+        """)
+    FeedbackCountProjection countByRecipeId(Long recipeId);
 }

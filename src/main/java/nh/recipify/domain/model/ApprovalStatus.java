@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(enumAsRef = true)
 public enum ApprovalStatus {
-    APPROVAL_PENDING,
+    PENDING,
     APPROVED,
     REJECTED
 }

@@ -712,6 +712,9 @@ components:
     AdminRecipeDto:
       type: object
       properties:
+        approvedFeedbackCount:
+          type: integer
+          format: int64
         categoryIds:
           type: array
           items:
@@ -722,9 +725,6 @@ components:
         createdAt:
           type: string
           format: date-time
-        feedbackCount:
-          type: integer
-          format: int64
         headline:
           type: string
         id:
@@ -744,18 +744,24 @@ components:
           format: int32
         mealTypeId:
           type: string
+        pendingFeedbackCount:
+          type: integer
+          format: int64
         preparationTime:
           type: integer
           format: int32
+        rejectedFeedbackCount:
+          type: integer
+          format: int64
         title:
           type: string
         updatedAt:
           type: string
           format: date-time
       required:
+      - approvedFeedbackCount
       - categoryIds
       - createdAt
-      - feedbackCount
       - headline
       - id
       - image
@@ -763,12 +769,14 @@ components:
       - instructions
       - likes
       - mealTypeId
+      - pendingFeedbackCount
+      - rejectedFeedbackCount
       - title
       - updatedAt
     ApprovalStatus:
       type: string
       enum:
-      - APPROVAL_PENDING
+      - PENDING
       - APPROVED
       - REJECTED
     CategoryDto:

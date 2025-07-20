@@ -90,7 +90,7 @@ public class Feedback {
         this.commenter = commenter;
         this.rating = rating;
         this.comment = comment;
-        this.approvalStatus = ApprovalStatus.APPROVAL_PENDING;
+        this.approvalStatus = ApprovalStatus.PENDING;
     }
 
     @Override
