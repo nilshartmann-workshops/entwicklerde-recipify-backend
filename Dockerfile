@@ -1,5 +1,5 @@
 # Start with a base image containing Java runtime
-FROM eclipse-temurin:21-jdk
+FROM eclipse-temurin:24-jdk
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
