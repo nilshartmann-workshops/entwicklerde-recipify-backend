@@ -1,7 +1,7 @@
 # Start with a base image containing Java runtime
 FROM eclipse-temurin:24-jdk
 
-COPY src/main/resources/static/images /webroot/images
+COPY web-root /web-root
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
