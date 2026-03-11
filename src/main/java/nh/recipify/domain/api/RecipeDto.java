@@ -21,7 +21,9 @@ public record RecipeDto(
     @NotNull List<CategoryDto> categories,
     @NotNull String mealType,
     @NotNull int likes,
-    @NotNull ImageDto image
+    @NotNull ImageDto image,
+    @NotNull LocalDateTime generatedAt
+
 ) {
 
     public static RecipeDto forRecipe(Recipe r) {
@@ -36,7 +38,8 @@ public record RecipeDto(
             r.getCategories().stream().map(CategoryDto::of).toList(),
             r.getMealType().getName(),
             r.getLikes(),
-            r.getImage().map(ImageDto::of).orElse(emptyImage)
+            r.getImage().map(ImageDto::of).orElse(emptyImage),
+            LocalDateTime.now()
         );
     }
 

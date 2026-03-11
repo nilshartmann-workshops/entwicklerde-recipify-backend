@@ -70,7 +70,7 @@ public interface RecipeRepository extends Repository<Recipe, Long> {
                 ORDER BY r.created_at ASC
                 LIMIT 2
             )
-            SELECT id, title, mealType, imageId, imageSrc, imageTitle
+            SELECT id, now() as generatedAt, title, mealType, imageId, imageSrc, imageTitle
             FROM (
                 SELECT * FROM older
                 UNION ALL

@@ -811,6 +811,9 @@ components:
         createdAt:
           type: string
           format: date-time
+        generatedAt:
+          type: string
+          format: date-time
         headline:
           type: string
         id:
@@ -841,6 +844,7 @@ components:
       - categories
       - cookTime
       - createdAt
+      - generatedAt
       - headline
       - id
       - image
@@ -854,6 +858,9 @@ components:
     ExploreRecipeDto:
       type: object
       properties:
+        generatedAt:
+          type: string
+          format: date-time
         id:
           type: string
         image:
@@ -863,6 +870,7 @@ components:
         title:
           type: string
       required:
+      - generatedAt
       - id
       - image
       - mealType
@@ -1260,6 +1268,9 @@ components:
         createdAt:
           type: string
           format: date-time
+        generatedAt:
+          type: string
+          format: date-time
         headline:
           type: string
         id:
@@ -1282,6 +1293,7 @@ components:
       - categories
       - cookTime
       - createdAt
+      - generatedAt
       - headline
       - id
       - image
